@@ -67,8 +67,7 @@ class Session:
 
         global api_index
         # 一个api失效时尝试下一个
-        for i in range(len(api_key_list)):
-
+        for _ in range(len(api_key_list)):
             api_index = (api_index + 1) % len(api_key_list)
             logger.debug(f"使用 API: {api_index + 1}")
             res, ok = await asyncio.get_event_loop().run_in_executor(None, get_chat_response, api_key_list[api_index],
@@ -187,7 +186,7 @@ async def _(matcher: Matcher, event: MessageEvent, arg: Message = CommandArg()):
         except:
             img = await md_to_pic(resp)
             resp = MessageSegment.image(img)
-            await matcher.send("消息发送失败可能是被风控，建议使用文转图模式,本回复已转为图片模式" + resp, at_sender=True)
+            await matcher.send(f"消息发送失败可能是被风控，建议使用文转图模式,本回复已转为图片模式{resp}", at_sender=True)
             user_lock[session_id] = False
     user_lock[session_id] = False
 
@@ -200,8 +199,7 @@ reset = ['重置', '重置会话']
 
 @chat_gpt3.handle()
 async def _(args: Message = CommandArg()):
-    plain_text = args.extract_plain_text()
-    if plain_text:
+    if plain_text := args.extract_plain_text():
         chat_gpt3.set_arg("prompt", message=args)
 
 
