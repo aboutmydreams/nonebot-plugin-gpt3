@@ -43,8 +43,7 @@ from nonebot.log import logger
 logger.info(f"加载 {len(api_key_list)}个 APIKeys")
 
 # 基本会话
-matcher_params = {}
-matcher_params['cmd'] = gpt3_command_prefix
+matcher_params = {'cmd': gpt3_command_prefix}
 if gpt3_need_at:
     matcher_params['rule'] = to_me()
 
